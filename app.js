@@ -15,18 +15,6 @@ window.onload = function(){
 		var pause = false;
 
 
-		p.mousePressed = function() {
-		  if(p.mouseX >= 0 && p.mouseX < canvasSideLength && p.mouseY >= 0 && p.mouseY < canvasSideLength) {
-		    let x = Math.floor(p.mouseX / w);
-		  	let y = Math.floor(p.mouseY / w);
-
-		    let numberPosition = positionToNumber(x, y);
-
-		    alert(x + ":" + y + " = " + board[numberPosition] + " nei: " + getNeighborNumber(x, y));
-		  }
-
-		}
-
 		p.setup = function() {
 		  p.createCanvas(canvasSideLength, canvasSideLength);
 
@@ -37,6 +25,7 @@ window.onload = function(){
 
 		}
 
+		//generate random tilemap
 		p.generateTileMap = function() {
 			for(var i = 0; i < columns * rows; i++) {
 				board[i] = Math.floor((Math.random() * 2) + 1) - 1;
@@ -51,12 +40,12 @@ window.onload = function(){
 			}
 		}
 
+		//setup tilemap
 		p.init = function() {
-
-		  p.generateTileMap();
-
+			p.generateTileMap();
 		}
 
+		//render
 		p.draw = function() {
 		  if(!pause) {
 		    p.background(255);
@@ -96,44 +85,49 @@ window.onload = function(){
 			}
 
 
-		  for(var i = 0; i < board.length; i++) {
+			for(var i = 0; i < board.length; i++) {
 
-		    let out = p.numberToPosition(i);
+			    let out = p.numberToPosition(i);
 
-		    let x = out[0];
-		    let y = out[1];
+			    let x = out[0];
+			    let y = out[1];
 
-		    let neighbors = p.getNeighborNumber(x, y);
+			    let neighbors = p.getNeighborNumber(x, y);
 
-		    if ((board[i] == 1) && (neighbors <  2))
-		      next[i] = 0; //loneliness
-		    else if ((board[i] == 1) && (neighbors >  3))
-		      next[i] = 0; //overpopulation
-		    else if ((board[i] == 0) && (neighbors == 3))
-		      next[i] = 1; //reproduction
-		    else
-		      next[i] = board[i];
-		  }
+				if ((board[i] == 1) && (neighbors <  2))
+					next[i] = 0; //loneliness
+				else if ((board[i] == 1) && (neighbors >  3))
+					next[i] = 0; //overpopulation
+				else if ((board[i] == 0) && (neighbors == 3))
+					next[i] = 1; //reproduction
+				else
+					next[i] = board[i];
+			}
 
-		  var temp = board;
-		  board = next;
-		  next = temp;
+			//swap tilemap
+			var temp = board;
+			board = next;
+			next = temp;
 		}
 
+		//import a tilemap (setter)
 		p.import = function(imported) {
 			inImportation = imported.slice();
 		}
 
+		//export a tilemap (getter)
 		p.export = function() {
 			return board;
 		}
 
+		//tilemap id to position
 		p.numberToPosition = function(number) {
 		  let x = number % columns;
 		  let y = Math.floor(number / rows);
 		  return [x, y];
 		}
 
+		//position to tilemap id
 		p.positionToNumber = function(x, y) {
 		  return x + y * columns;
 		}
@@ -192,16 +186,17 @@ window.onload = function(){
 		var canvasSideLength = 400;
 
 		p.mousePressed = function() {
-		  if(p.mouseX >= 0 && p.mouseX < canvasSideLength && p.mouseY >= 0 && p.mouseY < canvasSideLength) {
-		    let x = Math.floor(p.mouseX / w);
-		  	let y = Math.floor(p.mouseY / w);
+			//check if click inside canvas
+			if(p.mouseX >= 0 && p.mouseX < canvasSideLength && p.mouseY >= 0 && p.mouseY < canvasSideLength) {
+				let x = Math.floor(p.mouseX / w);
+				let y = Math.floor(p.mouseY / w);
 
-		    let numberPosition = p.positionToNumber(x, y);
+				let numberPosition = p.positionToNumber(x, y);
 
 				if(board[numberPosition] == 1)
 					board[numberPosition] = 0;
 				else
-		    	board[numberPosition] = 1;
+					board[numberPosition] = 1;
 			}
 
 		}
@@ -213,12 +208,12 @@ window.onload = function(){
 		}
 
 		p.setup = function() {
-		  p.createCanvas(canvasSideLength, canvasSideLength);
+			p.createCanvas(canvasSideLength, canvasSideLength);
 
-		  columns = Math.floor(canvasSideLength / w);
-		  rows    = Math.floor(canvasSideLength / w);
+			columns = Math.floor(canvasSideLength / w);
+			rows    = Math.floor(canvasSideLength / w);
 
-		  p.init();
+			p.init();
 
 		}
 
@@ -230,50 +225,51 @@ window.onload = function(){
 
 		p.init = function() {
 
-		  p.clearTileMap();
+			p.clearTileMap();
 
-
-		 	board[24] = 1;
-		  board[62] = 1;
-		  board[64] = 1;
-		  board[92] = 1;
-		  board[93] = 1;
-		  board[100] = 1;
-		  board[101] = 1;
-		  board[114] = 1;
-		  board[115] = 1;
-		  board[131] = 1;
-		  board[135] = 1;
-		  board[140] = 1;
-		  board[141] = 1;
-		  board[154] = 1;
-		  board[155] = 1;
-		  board[160] = 1;
-		  board[161] = 1;
-		  board[170] = 1;
-		  board[176] = 1;
-		  board[180] = 1;
-		  board[181] = 1;
-		  board[200] = 1;
-		  board[201] = 1;
-		  board[210] = 1;
-		  board[214] = 1;
-		  board[216] = 1;
-		  board[217] = 1;
-		  board[222] = 1;
-		  board[224] = 1;
-		  board[250] = 1;
-		  board[256] = 1;
-		  board[264] = 1;
-		  board[291] = 1;
-		  board[295] = 1;
-		  board[332] = 1;
-		  board[333] = 1;
+			//build plane generator in game of life editor
+			board[24] = 1;
+			board[62] = 1;
+			board[64] = 1;
+			board[92] = 1;
+			board[93] = 1;
+			board[100] = 1;
+			board[101] = 1;
+			board[114] = 1;
+			board[115] = 1;
+			board[131] = 1;
+			board[135] = 1;
+			board[140] = 1;
+			board[141] = 1;
+			board[154] = 1;
+			board[155] = 1;
+			board[160] = 1;
+			board[161] = 1;
+			board[170] = 1;
+			board[176] = 1;
+			board[180] = 1;
+			board[181] = 1;
+			board[200] = 1;
+			board[201] = 1;
+			board[210] = 1;
+			board[214] = 1;
+			board[216] = 1;
+			board[217] = 1;
+			board[222] = 1;
+			board[224] = 1;
+			board[250] = 1;
+			board[256] = 1;
+			board[264] = 1;
+			board[291] = 1;
+			board[295] = 1;
+			board[332] = 1;
+			board[333] = 1;
 
 		}
 
+		//render
 		p.draw = function() {
-	    p.background(255);
+	    	p.background(255);
 
 			if(inImportation.length > 0) {
 
@@ -284,49 +280,57 @@ window.onload = function(){
 				inImportation = [];
 			}
 
-	    for(var i = 0; i < board.length; i++) {
+			for(var i = 0; i < board.length; i++) {
 
-	      let out = p.numberToPosition(i);
+				let out = p.numberToPosition(i);
 
-	      let x = out[0];
-	      let y = out[1];
+				let x = out[0];
+				let y = out[1];
 
-	      if ((board[i] == 1)) {
-	        p.stroke(0);
-	        p.strokeWeight(0);
-	        p.fill(p.color(0, 0, 0));
-	        p.rect(x * w, y * w, w, w);
-	      }
-	    }
+				if ((board[i] == 1)) {
+					p.stroke(0);
+					p.strokeWeight(0);
+					p.fill(p.color(0, 0, 0));
+					p.rect(x * w, y * w, w, w);
+				}
+			}
 
 		}
 
+		// import a tilemap (setter)
 		p.import = function(importedMap) {
 			inImportation = importedMap.slice();
 		}
 
+		// export tile map (getter)
 		p.export = function() {
 			return board;
 		}
 
+		//tilemap id to position
 		p.numberToPosition = function(number) {
-		  let x = number % columns;
-		  let y = Math.floor(number / rows);
-		  return [x, y];
+			let x = number % columns;
+			let y = Math.floor(number / rows);
+			return [x, y];
 		}
 
+		//position to tilemap id
 		p.positionToNumber = function(x, y) {
-		  return x + y * columns;
+			return x + y * columns;
 		}
 
 	};
 
 
 
-
+	//init canvas
 	var gameOfLifeElement = new p5(gameOfLife, 'gameOfLife-container');
 	var gameOfLifeEditorElement = new p5(gameOfLifeEditor, 'gameOfLifeEditor-container');
 
+
+
+
+	//buttons event listeners
 	//game of life control
 	document.getElementById("turnPause").addEventListener("click", function() {
 		gameOfLifeElement.turnPause();

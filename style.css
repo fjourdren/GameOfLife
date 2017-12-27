@@ -1,0 +1,19 @@
+.shower {
+	display: inline-block;
+	border: 1px solid black;
+	text-align: center;
+}
+
+.shower h3 {
+	text-align: center;
+}
+
+.shower canvas {
+	border-bottom: 1px solid black;
+	border-top: 1px solid black;
+}
+
+.shower button {
+	padding: 10px;
+	margin-bottom: 5px;
+}
